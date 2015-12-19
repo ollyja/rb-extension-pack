@@ -19,7 +19,8 @@ class DraftCheckExtension(Extension):
       ]
 
       for signal, handler in hooks:
-         SignalHook(self, signal, handler)
+         ''' set sandbox_errors = False to raise the exception to sender ''' 
+         SignalHook(self, signal, handler, None, False)
 
    def on_review_request_publishing(self, user, review_request_draft, **kwargs): 
       """Handler for the review_request_publishing."""
@@ -44,4 +45,4 @@ class DraftCheckExtension(Extension):
          raise PublishError('description text is too short')
 
       if len(review_request_draft.testing_done) < 50:
-         raise AttributeError('testing done is too short')
+         raise PublishError('testing done is too short')
